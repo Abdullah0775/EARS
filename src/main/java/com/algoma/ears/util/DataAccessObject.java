@@ -1,0 +1,36 @@
+package com.algoma.ears.util;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.List;
+
+
+public abstract class DataAccessObject <T extends DataTransferObject>{
+    protected final Connection connection;
+    protected final String LAST_VAL = "SELECT last_value FROM ";
+
+    public DataAccessObject(Connection connection){
+        super();
+        this.connection = connection;
+    }
+    public abstract T findById(long id);
+    public abstract List<T> findAll();
+    public abstract T update(T dto);
+    public abstract void delete(long id);
+
+    protected int getLastValue( String seq){
+        int key = 0;
+        String sql = LAST_VAL + seq;
+        try (PreparedStatement s = connection.prepareStatement(sql)){
+            ResultSet rs = s.executeQuery();
+            while(rs.next()){
+                key = rs.getInt(1);
+            }
+            return key;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+}
