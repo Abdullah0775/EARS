@@ -41,9 +41,22 @@ public class Admin implements DataTransferObject{
         this.name = name;
     }
 
-    //post jobs 
+    //post jobs  
+    public void postJobs(String jobTitle, String jobDescription){
+        Jobs newJob = new Jobs();
+        newJob.setTitle(jobTitle);
+        newJob.setDescription(jobDescription);
+        //JobsDao call to entry in the database
+    }
     //get reviews of faculties on applications
+    // public Reviews getReveiw(long appId){
+    //     //ReviewsDao call to get database 
+    //     return new Reviews();
+    // }
     // changes the status of applicatoins 
-    //
+    public void updateAppStatus(Status newSt,long appId){
+        //appliactionDAO findID(appId)
+        //update status - 
+    }
 
 }

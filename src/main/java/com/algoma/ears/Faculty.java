@@ -33,7 +33,7 @@ public class Faculty implements DataTransferObject{
     public void setPassword(String password){
         this.password= password;
     }
-    
+
     public String getName() {
         return this.name;
     }
@@ -51,5 +51,12 @@ public class Faculty implements DataTransferObject{
     }
 
     //Creation of reviews for job applications HOW?? idk 
+    public void createReveiw(long appId,String revContent){
+        Reviews newReview = new Reviews();
+        newReview.setApplicationId(appId);
+        newReview.setFacultyId(getId());
+        newReview.setReviewContent(revContent);
+        //ReviewDAO.insert(newReview);
+    }
 
 }
