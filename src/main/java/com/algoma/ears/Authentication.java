@@ -1,14 +1,29 @@
 package com.algoma.ears;
 
-public class Authentication {
-    private String userId;
-    private String password;
+import java.sql.Connection;
 
-    public Authentication(String userId, String password){
-        this.userId = userId;
-        this.password = password;
+import com.algoma.ears.dao.AdminDAO;
+import com.algoma.ears.dao.FacultyDAO;
+
+public class Authentication {
+    private Connection connection;
+
+    public Authentication(Connection connection){
+        this.connection = connection;
     } 
-    public boolean logIn(){
+    public boolean adminLogIn(String userId, String password){
+        AdminDAO ad = new AdminDAO(this.connection);
+        Admin a = ad.findByUser(userId);
+        if(password.equals(a.getPassword()))
+            return true;
+        return false;
+    }
+
+    public boolean facultyLogin( String userId, String password){
+        FacultyDAO fd = new FacultyDAO(this.connection);
+        Faculty f = fd.findByUser(userId);
+        if(f.getPassword().equals(password))
+            return true;
         return false;
     }
 }

@@ -50,13 +50,17 @@ public class Faculty implements DataTransferObject{
         this.subject = subject;
     }
 
-    //Creation of reviews for job applications HOW?? idk 
-    public void createReveiw(long appId,String revContent){
-        Reviews newReview = new Reviews();
+    //Creation of reviews for job applications
+    public Reviews createReveiw(long revId, long appId,String revContent){
+        Reviews newReview = new Reviews(); 
+        String ss = this.getId()+""+appId;
+        revId = Integer.parseInt(ss);
+        newReview.setId(revId);
         newReview.setApplicationId(appId);
-        newReview.setFacultyId(getId());
+        newReview.setFacultyId(this.getId());
         newReview.setReviewContent(revContent);
         //ReviewDAO.insert(newReview);
+        return newReview;
     }
 
 }

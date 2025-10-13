@@ -9,6 +9,8 @@ public class Admin implements DataTransferObject{
     private String name;
 
 
+
+    @Override
     public long getId() {
         return this.id;
     }
@@ -42,11 +44,25 @@ public class Admin implements DataTransferObject{
     }
 
     //post jobs  
-    public void postJobs(String jobTitle, String jobDescription){
+    public Jobs postJobs(/*Connection conn,*/long id,String jobTitle, String jobDescription){
         Jobs newJob = new Jobs();
+        newJob.setId(id);
         newJob.setTitle(jobTitle);
         newJob.setDescription(jobDescription);
         //JobsDao call to entry in the database
+        //JobsDAO jdao = new JobsDAO(conn);
+        //jdao.create(newJob);
+        return newJob;
+    }
+
+    public Faculty createFaculty(long id,String name, String userId, String password,String subject){
+        Faculty newfaculty = new Faculty();
+        newfaculty.setId(id);
+        newfaculty.setName(name);
+        newfaculty.setUserId(userId);
+        newfaculty.setPassword(password);
+        newfaculty.setSubject(subject);
+        return newfaculty;
     }
     //get reviews of faculties on applications
     // public Reviews getReveiw(long appId){
@@ -54,7 +70,8 @@ public class Admin implements DataTransferObject{
     //     return new Reviews();
     // }
     // changes the status of applicatoins 
-    public void updateAppStatus(Status newSt,long appId){
+    public void updateAppStatus(String newSt,Application app){
+        app.setStatus(newSt);
         //appliactionDAO findID(appId)
         //update status - 
     }
