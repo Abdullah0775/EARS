@@ -3,6 +3,7 @@ package com.algoma.ears.util;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -17,9 +18,10 @@ public abstract class DataAccessObject <T extends DataTransferObject>{
     public abstract T findById(long id);
     public abstract List<T> findAll();
     public abstract T update(T dto);
+    public abstract T create(T dto);
     public abstract void delete(long id);
 
-    protected int getLastValue( String seq){
+    protected int getLastValue(String seq){
         int key = 0;
         String sql = LAST_VAL + seq;
         try (PreparedStatement s = connection.prepareStatement(sql)){
@@ -27,10 +29,9 @@ public abstract class DataAccessObject <T extends DataTransferObject>{
             while(rs.next()){
                 key = rs.getInt(1);
             }
-            return key;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return key;
     }
 }
