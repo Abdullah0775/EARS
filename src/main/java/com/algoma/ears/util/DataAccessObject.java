@@ -21,13 +21,13 @@ public abstract class DataAccessObject <T extends DataTransferObject>{
     public abstract T create(T dto);
     public abstract void delete(long id);
 
-    protected int getLastValue(String seq){
-        int key = 0;
+    public long getLastValue(String seq){
+        long key = 0;
         String sql = LAST_VAL + seq;
         try (PreparedStatement s = connection.prepareStatement(sql)){
             ResultSet rs = s.executeQuery();
             while(rs.next()){
-                key = rs.getInt(1);
+                key = rs.getLong(1);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

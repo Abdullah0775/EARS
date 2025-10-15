@@ -6,7 +6,7 @@ import com.algoma.ears.dao.AdminDAO;
 import com.algoma.ears.dao.FacultyDAO;
 
 public class Authentication {
-    private Connection connection;
+    private final Connection connection;
 
     public Authentication(Connection connection){
         this.connection = connection;
@@ -14,16 +14,12 @@ public class Authentication {
     public boolean adminLogIn(String userId, String password){
         AdminDAO ad = new AdminDAO(this.connection);
         Admin a = ad.findByUser(userId);
-        if(password.equals(a.getPassword()))
-            return true;
-        return false;
+        return password.equals(a.getPassword());
     }
 
-    public boolean facultyLogin( String userId, String password){
+    public boolean facultyLogIn( String userId, String password){
         FacultyDAO fd = new FacultyDAO(this.connection);
         Faculty f = fd.findByUser(userId);
-        if(f.getPassword().equals(password))
-            return true;
-        return false;
+        return f.getPassword().equals(password);
     }
 }

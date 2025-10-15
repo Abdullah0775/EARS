@@ -7,13 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.algoma.ears.Application;
 import com.algoma.ears.util.DataAccessObject;
 
 public class AppDAO extends DataAccessObject<Application>{
 
-    private static final String INSERT="INSERT INTO applicatoins(app_id, job_id, resume, status) VALUES (?,?,?,?)";
-    private static final String UPDATE="UPDATE applications SET job_id = ?,reusme = ?, status = ? WHERE app_id = ?";
+    private static final String INSERT="INSERT INTO applications(job_id, resume) VALUES (?,?)";
+    private static final String UPDATE="UPDATE applications SET job_id = ?,resume = ?, status = ? WHERE app_id = ?";
     private static final String DELETE="DELETE FROM applications WHERE app_id = ?";
     private static final String GET_ONE="SELECT * FROM applications WHERE app_id=?";
     private static final String GET_ALL="SELECT * FROM applications";
@@ -94,15 +95,14 @@ public class AppDAO extends DataAccessObject<Application>{
     @Override
     public Application create(Application dto) {
         try(PreparedStatement st = this.connection.prepareStatement(INSERT)){
-            st.setLong(1, dto.getId());
-            st.setLong(2, dto.getJobId());
-            st.setString(3,dto.getResume() );
-            st.setString(4,dto.getStatus() );
+            
+            st.setLong(1, dto.getJobId());
+            st.setString(2,dto.getResume());
             st.execute();
         }catch(SQLException e){
             throw new RuntimeException(e);
         }
-        long id = this.getLastValue("APPLICATIONS_SEQUENCE");
+        long id = this.getLastValue("app_seq");
         return this.findById(id);
     }
 

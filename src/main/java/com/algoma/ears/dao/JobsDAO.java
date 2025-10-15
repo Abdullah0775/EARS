@@ -1,13 +1,18 @@
 package com.algoma.ears.dao;
-import com.algoma.ears.util.DataAccessObject;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.algoma.ears.Jobs;
-import java.sql.*;
-import java.util.*;
+import com.algoma.ears.util.DataAccessObject;
 
 public class JobsDAO extends DataAccessObject<Jobs>{
     private static final String INSERT= "INSERT INTO jobs (title,description) VALUES(?,?)";
     private static final String GET_ONE = "SELECT job_id, title, description FROM jobs WHERE job_id =?";
-    private static final String GET_ALL ="SELECT job_id, title, description FROM jobs ORDER BY DESC job_id";
+    private static final String GET_ALL ="SELECT job_id, title, description FROM jobs";
     private static final String UPDATE= "UPDATE jobs SET title = ?, description = ? WHERE job_id = ?";
     private static final String DELETE="DELETE FROM jobs WHERE job_id = ?";
 
@@ -40,7 +45,7 @@ public class JobsDAO extends DataAccessObject<Jobs>{
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Jobs job = new Jobs();
-                job.setId(rs.getLong("jobs_id"));
+                job.setId(rs.getLong("job_id"));
                 job.setTitle(rs.getString("title"));
                 job.setDescription(rs.getString("description"));
                 foundJobs.add(job);
@@ -93,7 +98,7 @@ public class JobsDAO extends DataAccessObject<Jobs>{
         }finally{
             try {
                 this.connection.setAutoCommit(true);
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -115,7 +120,7 @@ public class JobsDAO extends DataAccessObject<Jobs>{
             try {
                 this.connection.rollback();
             } catch (SQLException e1) {
-                e1.printStackTrace();
+                throw new RuntimeException(e1);
             }
             throw new RuntimeException(e);
         }finally{
