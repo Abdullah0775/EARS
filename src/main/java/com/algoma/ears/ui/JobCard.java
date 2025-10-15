@@ -1,7 +1,6 @@
 package com.algoma.ears.ui;
 
 import com.algoma.ears.Jobs;
-import com.algoma.ears.StageHandler;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

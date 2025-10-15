@@ -2,7 +2,6 @@ package com.algoma.ears.ui;
 
 
 import com.algoma.ears.Main;
-import com.algoma.ears.StageHandler;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
