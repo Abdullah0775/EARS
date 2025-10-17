@@ -18,7 +18,7 @@ public class AppDAO extends DataAccessObject<Application>{
     private static final String DELETE="DELETE FROM applications WHERE app_id = ?";
     private static final String GET_ONE="SELECT * FROM applications WHERE app_id=?";
     private static final String GET_ALL="SELECT * FROM applications";
-    
+    private static final String GET_BY_JOBID= "SELECT * FROM applications WHERE job_id=?";
     public AppDAO(Connection connection) {
         super(connection);
     }
@@ -46,6 +46,25 @@ public class AppDAO extends DataAccessObject<Application>{
     public List<Application> findAll() {
         List<Application> apps = new ArrayList<>();
         try(PreparedStatement st = this.connection.prepareStatement(GET_ALL)){
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Application na = new Application();
+                na.setId(rs.getLong("app_Id"));
+                na.setJobId(rs.getLong("job_Id"));
+                na.setResume(rs.getString("resume"));
+                na.setStatus(rs.getString("status"));
+                apps.add(na);
+            }
+        }catch(SQLException | IOException e){
+            throw new RuntimeException(e);
+        }
+        return apps;
+    } 
+    // Find applications by Job ID, no need to join right?
+    public List<Application> findByJobId(long jobId) {
+        List<Application> apps = new ArrayList<>();
+        try(PreparedStatement st = this.connection.prepareStatement(GET_BY_JOBID)){
+            st.setLong(1, jobId);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Application na = new Application();

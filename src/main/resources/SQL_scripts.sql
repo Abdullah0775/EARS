@@ -1,3 +1,4 @@
+-- Active: 1760484336101@@127.0.0.1@5401@ears
 CREATE SEQUENCE admins_seq start with 100;
 
 CREATE TABLE admins(
@@ -56,4 +57,9 @@ CREATE TABLE reviews(
     content VARCHAR2(255)
 );
 
-SELECT * FROM applications;
+SELECT * FROM applications; 
+
+SELECT * FROM faculty ;
+
+INSERT INTO faculty(faculty_user,faculty_password,faculty_name,subject) VALUES ('faculty3','amz10','Ahmed','Mathematics');
+

@@ -16,7 +16,9 @@ public class ReviewsDAO extends DataAccessObject<Reviews> {
     private static final String GET_ONE ="SELECT * FROM  reviews WHERE rev_id = ?";
     private static final String GET_ALL="SELECT * FROM  reviews";
     private static final String UPDATE="UPDATE reviews SET fac_id = ?, app_id = ? , content = ? WHERE rev_id=?";
-    private static final String DELETE ="DELETE FROM reviews WHERE rev_id =?"; 
+    private static final String DELETE ="DELETE FROM reviews WHERE rev_id =?";
+    private static final String GET_BY_APPID="SELECT * FROM reviews WHERE app_id = ?"; 
+    private static final String GET_BY_FACID="SELECT * FROM reviews WHERE fac_id = ?";
 
     public ReviewsDAO(Connection connection) {
         super(connection);
@@ -60,6 +62,48 @@ public class ReviewsDAO extends DataAccessObject<Reviews> {
         }
         return rvs;
     }
+
+    
+    public List<Reviews> findByAppId(long appId) {
+        List<Reviews> rvs = new ArrayList<>();
+        try (PreparedStatement st = this.connection.prepareStatement(GET_BY_APPID)){
+            st.setLong(1, appId);
+            ResultSet rs= st.executeQuery();
+            while(rs.next()){
+                Reviews rv = new Reviews();
+                rv.setId(rs.getLong("rev_id"));
+                rv.setFacultyId(rs.getLong("fac_id"));
+                rv.setApplicationId(rs.getLong("app_id"));
+                rv.setReviewContent(rs.getString("content"));
+                rvs.add(rv);
+            }
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rvs;
+    }
+    
+    public List<Reviews> findByFacId(long faculty_id) {
+        List<Reviews> rvs = new ArrayList<>();
+        try (PreparedStatement st = this.connection.prepareStatement(GET_BY_FACID)){
+            st.setLong(1,faculty_id);
+            ResultSet rs= st.executeQuery();
+            while(rs.next()){
+                Reviews rv = new Reviews();
+                rv.setId(rs.getLong("rev_id"));
+                rv.setFacultyId(rs.getLong("fac_id"));
+                rv.setApplicationId(rs.getLong("app_id"));
+                rv.setReviewContent(rs.getString("content"));
+                rvs.add(rv);
+            }
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rvs;
+    }
+
 
     @Override
     public Reviews update(Reviews dto) {

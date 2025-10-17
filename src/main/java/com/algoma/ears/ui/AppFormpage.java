@@ -46,8 +46,9 @@ public class AppFormpage {
             try { 
                 System.out.println("Submitting application for job ID: " + this.jobId + " with resume: " + resumeF.getText());
                 Application app = Main.postApplication(this.jobId, resumeF.getText());
-                msgLabel.setText("Application submitted successfully!"+
-                    "\nID:  "+app.getId()+" Status: "+app.getStatus());
+                msgLabel.setText("""
+                                 Application submitted successfully!
+                                 ID:  """+app.getId()+" Status: "+app.getStatus());
             } catch ( RuntimeException ex) {
                 msgLabel.setText("Error reading resume: " + ex.getMessage());
             }

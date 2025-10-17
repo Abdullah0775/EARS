@@ -17,7 +17,9 @@ public class FacultyDAO extends DataAccessObject<Faculty> {
     private static final String UPDATE = "UPDATE faculty SET faculty_user = ?, faculty_password=?, faculty_name = ?, subject = ? WHERE faculty_id = ?";
     private static final String GET_ONE= "SELECT faculty_id, faculty_user, faculty_password, faculty_name, subject FROM faculty WHERE faculty_id = ?";
     private static final String GET_BY_USER= "SELECT faculty_id, faculty_user, faculty_password, faculty_name, subject FROM faculty WHERE faculty_user = ?";
-    private static final String GET_ALL= "SELECT faculty_id, faculty_user, faculty_password, faculty_name, subject FROM faculty";
+    private static final String GET_ALL= "SELECT faculty_id, faculty_user, faculty_password, faculty_name, subject FROM faculty"; 
+    private static final String GET_BY_NAME ="SELECT * FROM faculty WHERE faculty_name = ?";
+    private static final String GET_BY_SUB = "SELECT  * FROM faculty WHERE subject = ?";
 
     public FacultyDAO(Connection con){
         super(con);
@@ -56,6 +58,7 @@ public class FacultyDAO extends DataAccessObject<Faculty> {
         }
         return  rf;
     }
+
     public Faculty findByUser(String user){
     Faculty rf = new Faculty();
         try(PreparedStatement st = this.connection.prepareStatement(GET_BY_USER)){
@@ -73,6 +76,7 @@ public class FacultyDAO extends DataAccessObject<Faculty> {
         }
         return  rf;
 } 
+
     @Override
     public List<Faculty> findAll(){
         List<Faculty> facultys = new ArrayList<>();
@@ -91,7 +95,46 @@ public class FacultyDAO extends DataAccessObject<Faculty> {
             throw new RuntimeException(e);
         }
         return  facultys;
-}
+} 
+    public List<Faculty> findByName(String name){
+        List<Faculty> facultys = new ArrayList<>();
+        try(PreparedStatement st = this.connection.prepareStatement(GET_BY_NAME)){
+            st.setString(1, name);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Faculty rf = new Faculty();
+                rf.setId(rs.getLong("faculty_id"));
+                rf.setUserId(rs.getString("faculty_user"));
+                rf.setPassword(rs.getString("faculty_password"));
+                rf.setName(rs.getString("faculty_name"));
+                rf.setSubject(rs.getString("subject"));
+                facultys.add(rf);
+            }
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return  facultys;
+    }    
+    public List<Faculty> findBySub(String sub){
+        List<Faculty> facultys = new ArrayList<>();
+        try(PreparedStatement st = this.connection.prepareStatement(GET_BY_SUB)){
+            st.setString(1, sub);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Faculty rf = new Faculty();
+                rf.setId(rs.getLong("faculty_id"));
+                rf.setUserId(rs.getString("faculty_user"));
+                rf.setPassword(rs.getString("faculty_password"));
+                rf.setName(rs.getString("faculty_name"));
+                rf.setSubject(rs.getString("subject"));
+                facultys.add(rf);
+            }
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return  facultys;
+    }
+    
     @Override
     public Faculty update(Faculty dto){
     try {

@@ -12,6 +12,7 @@ import com.algoma.ears.util.DataAccessObject;
 public class JobsDAO extends DataAccessObject<Jobs>{
     private static final String INSERT= "INSERT INTO jobs (title,description) VALUES(?,?)";
     private static final String GET_ONE = "SELECT job_id, title, description FROM jobs WHERE job_id =?";
+    private static final String GET_BY_TITTLE = "SELECT * FROM jobs WHERE title = ?";
     private static final String GET_ALL ="SELECT job_id, title, description FROM jobs";
     private static final String UPDATE= "UPDATE jobs SET title = ?, description = ? WHERE job_id = ?";
     private static final String DELETE="DELETE FROM jobs WHERE job_id = ?";
@@ -42,6 +43,24 @@ public class JobsDAO extends DataAccessObject<Jobs>{
     public List<Jobs> findAll(){
         List<Jobs> foundJobs = new ArrayList<>();
         try(PreparedStatement st =this.connection.prepareStatement(GET_ALL) ){
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Jobs job = new Jobs();
+                job.setId(rs.getLong("job_id"));
+                job.setTitle(rs.getString("title"));
+                job.setDescription(rs.getString("description"));
+                foundJobs.add(job);
+            }
+        }catch(SQLException e){
+            
+            throw new RuntimeException(e);
+        }
+        return foundJobs;
+    }
+    public List<Jobs> findByTitle(String title){
+        List<Jobs> foundJobs = new ArrayList<>();
+        try(PreparedStatement st =this.connection.prepareStatement(GET_BY_TITTLE) ){
+            st.setString(1,title);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
                 Jobs job = new Jobs();
