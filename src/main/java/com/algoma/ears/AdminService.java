@@ -56,6 +56,9 @@ public class AdminService{
     public List<Application> getAppByJobid(long jobId){
         return this.appDao.findByJobId(jobId);
     } 
+     public List<Application> getAllApplications(){
+        return this.appDao.findAll();
+    }
     //Reviews 
     public List<Reviews> getAppReviews(long appId){
         return this.revDao.findByAppId(appId);
