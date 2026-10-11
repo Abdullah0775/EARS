@@ -171,7 +171,7 @@ public class ReviewsDAO extends DataAccessObject<Reviews> {
         }finally{
             try {
                 this.connection.setAutoCommit(true);
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }

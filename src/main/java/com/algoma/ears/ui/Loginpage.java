@@ -51,8 +51,9 @@ public class Loginpage {
         root.getChildren().add(form);
         
         adminLogin.setOnAction(e -> {
-            if(Main.adminAuthentication( userIdField.getText(), passwordField.getText())){
-                Adminpage admin = new Adminpage();
+            long adminId  = Main.adminAuthentication( userIdField.getText(), passwordField.getText());
+            if(adminId!= -1){
+                Adminpage admin = Main.getAdminpage(adminId);
                 StageHandler sh = new StageHandler((Stage) ((Button) e.getSource()).getScene().getWindow());
                 sh.setHeader("Administration", true, "LOG OUT", false);
                 sh.setCurrentView(admin.getView());
@@ -62,13 +63,15 @@ public class Loginpage {
         });
         
         facultyLogin.setOnAction(e -> {
-            if(!Main.facultyAuthentication( userIdField.getText(), passwordField.getText())){
+            long facId  = Main.facultyAuthentication( userIdField.getText(), passwordField.getText());
+            if(facId==-1){
                 messageLabel.setText("Invalid User ID or Password");
                 return;
             }
             StageHandler sh = new StageHandler((Stage) ((Button) e.getSource()).getScene().getWindow());
             sh.setHeader("Faculty", true, "LOG OUT", false);
-            sh.setCurrentView(new Facultypage().getView());
+            Facultypage facpage = Main.getFacultypage(facId);
+            sh.setCurrentView(facpage.getView());
         });
         root.setPrefSize(1000, 600);
         return root;

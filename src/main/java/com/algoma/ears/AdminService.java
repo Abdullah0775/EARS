@@ -8,14 +8,11 @@ import com.algoma.ears.dao.FacultyDAO;
 import com.algoma.ears.dao.JobsDAO;
 import com.algoma.ears.dao.ReviewsDAO;
 
-public class AdminService{
-    private JobsDAO jdao;
-    private AppDAO appDao;
-    private ReviewsDAO revDao;
-    private FacultyDAO facDao;
-    private AdminDAO admnDao;
-    //Admin can
+
+public class AdminService extends Service {
     
+    //Admin can
+    private final AdminDAO admindao;
     //get all jobs and also by title 
     // get applications on jobs
     // get reviews on applications
@@ -37,45 +34,42 @@ public class AdminService{
 
     
     public AdminService(Connection conn){
-        this.jdao = new JobsDAO(conn);
-        this.appDao = new AppDAO(conn);
-        this.revDao = new ReviewsDAO(conn);
-        this.facDao = new FacultyDAO(conn);
-        this.admnDao = new AdminDAO(conn);
+        super(conn);
+        this.admindao = new AdminDAO(conn);
     } 
 
     //Read- open//
-    //Jobs
-    public List<Jobs> getAllJobs(){
-        return this.jdao.findAll();
-    } 
-    public List<Jobs>getJobByTitle(String title){
-        return this.jdao.findByTitle(title);
-    }
-    // applicatoins 
-    public List<Application> getAppByJobid(long jobId){
-        return this.appDao.findByJobId(jobId);
-    } 
-     public List<Application> getAllApplications(){
-        return this.appDao.findAll();
-    }
-    //Reviews 
-    public List<Reviews> getAppReviews(long appId){
-        return this.revDao.findByAppId(appId);
-    }
+    // //Jobs
+    // public List<Jobs> getAllJobs(){
+    //     return this.jdao.findAll();
+    // } 
+    // public List<Jobs>getJobByTitle(String title){
+    //     return this.jdao.findByTitle(title);
+    // }
+    // // applicatoins 
+    // public List<Application> getAppByJobid(long jobId){
+    //     return this.appDao.findByJobId(jobId);
+    // } 
+    //  public List<Application> getAllApplications(){
+    //     return this.appDao.findAll();
+    // }
+    // //Reviews 
+    // public List<Reviews> getAppReviews(long appId){
+    //     return this.revDao.findByAppId(appId);
+    // }
     //Faculty
     public List<Faculty> getAllFac(){
-        return this.facDao.findAll();
+        return facdao.findAll();
     }
     public List<Faculty> getFacByName(String facultyName){
-        return this.facDao.findByName(facultyName);
+        return facdao.findByName(facultyName);
     }
     public List<Faculty> getFacByDepart(String department){
-        return this.facDao.findBySub(department);
+        return this.facdao.findBySub(department);
     }
     //Admin
     public Admin getProfile(long admnId){
-        return this.admnDao.findById(admnId);
+        return this.admindao.findById(admnId);
     }
     //Read - close//
 
@@ -86,7 +80,7 @@ public class AdminService{
     }
     //faculty
     public Faculty newFac(Faculty fac){
-        return this.facDao.create(fac);
+        return facdao.create(fac);
     }
     //Create - close//
 
@@ -97,35 +91,47 @@ public class AdminService{
     }
     //applcation
     public Application updateApplicationStatus(long appId, String newStatus){
-        Application app = appDao.findById(appId);
+        Application app = appdao.findById(appId);
         app.setStatus(newStatus);
-        return appDao.update(app);
+        return appdao.update(app);
     }
     public Application updateApplicationStatus(Application application){
-        return appDao.update(application);
+        return appdao.update(application);
     }
     //Admin Self 
     public Admin updateProfile(Admin admin){
-        return this.admnDao.update(admin);
+        return admindao.update(admin);
     }
     //Update - close//
 
     //Delete - open//
     public void deleteJob(Jobs job){
         //finds the application related to the job
-        List<Application> a = this.appDao.findByJobId(job.getId());
+        List<Application> a = this.appdao.findByJobId(job.getId());
         for(Application e : a){
             //for each job find the Reviews on it 
-            List<Reviews> r =this.revDao.findByAppId(e.getId());
+            List<Reviews> r =this.revdao.findByAppId(e.getId());
             //Deleting each review
             for(Reviews h : r)
-                this.revDao.delete(h.getId());
+                this.revdao.delete(h.getId());
             //Deleting each application
-            this.appDao.delete(e.getId());
+            this.appdao.delete(e.getId());
         }
         //then finally atlast deleting the job, Phew too much work
         this.jdao.delete(job.getId());
     }
     //Delete  - Close//
-    
+    //Button Handling 
+    // Nav-col
+    // public static Pane adminNavFacultyClick(){
+    //     Card card = new Card();
+    //     Pane pane = new Pane();
+    //     return pane;
+    //     //getallFaculty();
+    // }
+
+    @Override
+    public Faculty updateProfile(Faculty faculty) {
+        return facdao.update(faculty);
+    }
 }

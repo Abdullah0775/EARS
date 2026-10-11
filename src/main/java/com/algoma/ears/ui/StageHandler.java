@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class StageHandler {
     private Pane currentView; 
     private Scene scene;
-    private Stage stage; 
+    private final Stage stage; 
     private Pane prevView;
     private String label;
     private String buttonText; 

@@ -160,7 +160,7 @@ public class FacultyDAO extends DataAccessObject<Faculty> {
         }finally{
             try {
                 this.connection.setAutoCommit(true);
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -188,7 +188,7 @@ public class FacultyDAO extends DataAccessObject<Faculty> {
         }finally{
              try {
                 this.connection.setAutoCommit(true);
-            } catch (Exception e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }

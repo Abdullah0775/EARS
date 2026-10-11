@@ -11,15 +11,15 @@ public class Authentication {
     public Authentication(Connection connection){
         this.connection = connection;
     } 
-    public boolean adminLogIn(String userId, String password){
+    public long adminLogIn(String userId, String password){
         AdminDAO ad = new AdminDAO(this.connection);
         Admin a = ad.findByUser(userId);
-        return password.equals(a.getPassword());
+        return password.equals(a.getPassword())? a.getId() : -1;
     }
 
-    public boolean facultyLogIn( String userId, String password){
+    public long facultyLogIn( String userId, String password){
         FacultyDAO fd = new FacultyDAO(this.connection);
         Faculty f = fd.findByUser(userId);
-        return f.getPassword().equals(password);
+        return f.getPassword().equals(password)? f.getId() : -1;
     }
 }

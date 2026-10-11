@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.algoma.ears.dao.AppDAO;
 import com.algoma.ears.dao.JobsDAO;
+import com.algoma.ears.ui.Adminpage;
+import com.algoma.ears.ui.Facultypage;
 import com.algoma.ears.ui.Jobspage;
 import com.algoma.ears.ui.StageHandler;
 import com.algoma.ears.util.DatabaseConnectionManager;
@@ -33,6 +35,7 @@ public class Main extends javafx.application.Application {
         launch(args);
     }
 
+
    
 
     @Override
@@ -51,12 +54,12 @@ public class Main extends javafx.application.Application {
 
     }
 
-    public static boolean adminAuthentication(String userId, String password){
+    public static long adminAuthentication(String userId, String password){
         Authentication auth = new Authentication(conn);
         return auth.adminLogIn(userId, password);
     }
 
-    public static boolean facultyAuthentication(String userId, String password){
+    public static long facultyAuthentication(String userId, String password){
         Authentication auth = new Authentication(conn);
         return auth.facultyLogIn(userId, password);
     }
@@ -77,5 +80,15 @@ public class Main extends javafx.application.Application {
             throw new RuntimeException(e);
         }
     } 
+
+    public static Adminpage getAdminpage(long adminId){
+        Adminpage pa=  new Adminpage(conn,adminId);
+        return pa;
+    } 
+    
+    public static Facultypage getFacultypage(long facId){
+        Facultypage pa=  new Facultypage(conn, facId);
+        return pa;
+    }
 
 }

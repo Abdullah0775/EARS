@@ -82,7 +82,7 @@ public class JobsDAO extends DataAccessObject<Jobs>{
             st.setString(1,dto.getTitle());
             st.setString(2,dto.getDescription());
             st.execute();
-            long id= this.getLastValue("JOBS_SEQUENCE");
+            long id= this.getLastValue("jobs_seq");
             return this.findById(id);
         }catch(SQLException e){
             

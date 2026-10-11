@@ -36,6 +36,9 @@ public class Application implements DataTransferObject{
             return jobId+""+this.id+".pdf";
         return this.resume;
     }
+    public String getResumeFileLoc(){
+        return FILE_LOC + "/" + this.getResume();
+    }
     @Override
     public long getId() {
         return this.id;

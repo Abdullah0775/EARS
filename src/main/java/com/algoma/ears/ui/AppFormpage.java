@@ -13,9 +13,9 @@ import javafx.scene.layout.VBox;
 
 public class AppFormpage {
     
-    private long jobId;
-    private String jobTitle;
-    private String jobDescription;
+    private final long jobId;
+    private final String jobTitle;
+    private final String jobDescription;
 
     public AppFormpage(Jobs job) {
         this.jobId = job.getId();
@@ -42,7 +42,7 @@ public class AppFormpage {
         resumeF.setPromptText("Enter your resume link");
         Button submit = new Button("Submit Application");
         submit.setStyle("-fx-background-color: #007bff; -fx-text-fill: white;");
-        submit.setOnAction(e -> {
+        submit.setOnAction(_ -> {
             try { 
                 System.out.println("Submitting application for job ID: " + this.jobId + " with resume: " + resumeF.getText());
                 Application app = Main.postApplication(this.jobId, resumeF.getText());
